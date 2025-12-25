@@ -1,24 +1,15 @@
 {
-  "name": "order-management-challenge",
+  "name": "teste",
   "version": "1.0.0",
-  "description": "**Objetivo:** Avaliar organização de código, domínio de TypeScript e implementação de regras de negócio. **Stack:** Node.js, Express, Mongoose, TypeScript. **Testes:** Vitest (Diferencial).",
   "main": "index.js",
   "scripts": {
-    "test": "vitest",
-    "test:watch": "vitest --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/linkiodental/order-management-challenge.git"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/linkiodental/order-management-challenge/issues"
-  },
-  "homepage": "https://github.com/linkiodental/order-management-challenge#readme",
   "devDependencies": {
     "@types/node": "^25.0.3",
     "typescript": "^5.9.3",
