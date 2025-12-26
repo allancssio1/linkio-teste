@@ -15,12 +15,10 @@ export class CreateUserUseCase {
   ) {}
 
   async execute({ email, password }: CreateUserUseCaseRequest) {
-    if (email) {
-      const userExists = await this.userRepository.findByEmail(email)
+    const userExists = await this.userRepository.findByEmail(email)
 
-      if (userExists) {
-        throw new UserAlreadyExistsError()
-      }
+    if (userExists) {
+      throw new UserAlreadyExistsError()
     }
 
     const passwordHash = await this.hashGenerate.hash(password)
