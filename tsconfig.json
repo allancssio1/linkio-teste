@@ -6,10 +6,19 @@
     "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Iterator"],
     "module": "nodenext",
     "target": "es2022",
-
+    "outDir": "./dist",
+    "rootDir": ".",
+    "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"],
+      "test/*": ["tests/*"]
+    },
     "moduleResolution": "node16"
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "tests", "build"]
 }
