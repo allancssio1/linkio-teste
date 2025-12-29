@@ -12,4 +12,9 @@ describe('Service Entity', () => {
       }),
     )
   })
+  test('Should be not able create a Service Entity with value invalid', () => {
+    expect(() => new Service('service-name', 0, 'PENDING')).toThrowError(
+      'Value Invalid',
+    )
+  })
 })
