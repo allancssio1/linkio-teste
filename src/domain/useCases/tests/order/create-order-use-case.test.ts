@@ -71,6 +71,6 @@ describe('Create Order Use Case', () => {
           },
         ],
       }),
-    ).rejects.toThrowError('Value Service Invalid')
+    ).rejects.toThrowError('Value Invalid')
   })
 })
