@@ -20,5 +20,4 @@ export const findOrderByIdSchema = z.object({
 })
 export const advanceOrderSchema = z.object({
   id: z.uuid(),
-  state: z.enum(['CREATED', 'ANALYSIS', 'COMPLETED']),
 })

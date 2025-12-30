@@ -5,10 +5,9 @@ interface AdvanceStateOrderServiceRequest extends AdvanceOrderBody {}
 
 export class AdvanceStateOrderService {
   constructor(private readonly createOrderUseCase: AdvanceStateOrderUseCase) {}
-  async execute({ id, state }: AdvanceStateOrderServiceRequest) {
+  async execute({ id }: AdvanceStateOrderServiceRequest) {
     const order = await this.createOrderUseCase.execute({
       id,
-      state,
     })
     return order
   }
