@@ -7,11 +7,18 @@ import { OrderMapper } from '../mappers/order-mapper'
 import { ResourceNotFoundError } from 'src/core/errors/errors/resource-not-found'
 
 export class OrderRepositoryDrizzle implements OrderRepository {
-  async findByUserId(userId: string): Promise<Order[]> {
+  async findByUserId(
+    userId: string,
+    state?: 'CREATED' | 'ANALYSIS' | 'COMPLETED',
+  ): Promise<Order[]> {
     const ordersList = await db
       .select()
       .from(orders)
-      .where(EQ(orders.userId, userId))
+      .where(
+        state
+          ? EQ(orders.userId, userId) && EQ(orders.state, state)
+          : EQ(orders.userId, userId),
+      )
     return ordersList.map(OrderMapper.toDomain)
   }
   async advanceStatus(

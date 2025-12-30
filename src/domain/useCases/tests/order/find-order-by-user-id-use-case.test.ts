@@ -30,16 +30,40 @@ describe('Unit Test Find Order', () => {
       repo.create(order)
     }
   })
-  test('Find success', async () => {
+  test('Should be able list orders by user id', async () => {
     expect(await sut.execute({ userId: user.id })).toMatchObject([
       expect.objectContaining({
         userId: user.id,
+        lab: 'lab-name 0',
       }),
       expect.objectContaining({
         userId: user.id,
+        lab: 'lab-name 1',
       }),
       expect.objectContaining({
         userId: user.id,
+        lab: 'lab-name 2',
+      }),
+    ])
+  })
+  test('Should be able list orders by user id and state', async () => {
+    repo.advanceStatus('ANALYSIS', order.id)
+
+    expect(
+      await sut.execute({ userId: user.id, state: 'ANALYSIS' }),
+    ).toMatchObject([
+      expect.objectContaining({
+        userId: user.id,
+        state: 'ANALYSIS',
+      }),
+    ])
+    repo.advanceStatus('COMPLETED', order.id)
+    expect(
+      await sut.execute({ userId: user.id, state: 'COMPLETED' }),
+    ).toMatchObject([
+      expect.objectContaining({
+        userId: user.id,
+        state: 'COMPLETED',
       }),
     ])
   })

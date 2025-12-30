@@ -7,8 +7,14 @@ export class OrderRepositoryInMemory implements OrderRepository {
     const order = orders.find((order) => order.id === id)
     return Promise.resolve(order || null)
   }
-  findByUserId(userId: string): Promise<Order[]> {
-    const ordersList = orders.filter((order) => order.userId === userId)
+  findByUserId(
+    userId: string,
+    state?: 'CREATED' | 'ANALYSIS' | 'COMPLETED',
+  ): Promise<Order[]> {
+    const ordersList = orders.filter(
+      (order) =>
+        order.userId === userId && (state ? order.state === state : true),
+    )
     return Promise.resolve(ordersList)
   }
   advanceStatus(
