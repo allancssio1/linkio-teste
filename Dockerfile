@@ -8,8 +8,6 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run generate
-
 RUN npm run build
 
 FROM node:20-alpine
@@ -20,10 +18,10 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci --only=production
+RUN npm ci --only=prod
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/src/infra/database/drizzle ./dist/infra/database/drizzle
+COPY --from=builder /app/src/infra/database/drizzle ./dist/src/infra/database/drizzle
 COPY start.sh ./
 
 RUN chmod +x start.sh

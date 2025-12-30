@@ -24,7 +24,7 @@ async function main() {
   for (let i = 0; i < maxRetries; i++) {
     try {
       console.log(`🚀 Starting migrations... (attempt ${i + 1}/${maxRetries})`)
-      await migrate(db, { migrationsFolder: './dist/models/drizzle' })
+      await migrate(db, { migrationsFolder: './dist/src/infra/database/drizzle' })
       console.log('✅ Migrations completed successfully!')
       await pool.end()
       return

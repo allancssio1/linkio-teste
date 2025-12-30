@@ -51,13 +51,6 @@ app.register(orderRoutes, {
 })
 
 app.setErrorHandler((error, _request, reply) => {
-  // if (error.code === 'FST_ERR_VALIDATION') {
-  //   return reply.status(400).send({
-  //     message: 'Validation error.',
-  //     errors: error,
-  //   })
-  // }
-
   if (error instanceof AppError) {
     return reply.status(error.statusCode).send({
       message: 'Validation error.',
