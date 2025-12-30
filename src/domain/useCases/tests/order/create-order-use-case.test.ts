@@ -4,14 +4,17 @@ import { OrderRepository } from 'src/domain/repositories/order-repository'
 import { OrderRepositoryInMemory } from 'tests/repositories/order-repository-in-memory'
 import { CreateOrderUseCase } from '../../order/create-order-use-case'
 import { Service } from 'src/domain/entities/service-entity'
+import { User } from 'src/domain/entities/user-entity'
 
 describe('Create Order Use Case', () => {
   let sut: CreateOrderUseCase
   let repo: OrderRepository
+  let user: User
 
   beforeAll(async () => {
     repo = new OrderRepositoryInMemory()
     sut = new CreateOrderUseCase(repo)
+    user = new User('john.doe@example.com', '123456')
   })
   test('Create Order Success', async () => {
     const order = await sut.execute({
@@ -32,6 +35,7 @@ describe('Create Order Use Case', () => {
           status: 'PENDING',
         },
       ],
+      userId: user.id,
     })
 
     expect(order).toMatchObject(
@@ -70,6 +74,7 @@ describe('Create Order Use Case', () => {
             status: 'PENDING',
           },
         ],
+        userId: user.id,
       }),
     ).rejects.toThrowError('Value Invalid')
   })
