@@ -10,6 +10,7 @@ export class Order {
   private _state: 'CREATED' | 'ANALYSIS' | 'COMPLETED'
   status: 'ACTIVE' | 'DELETED'
   services: Service[]
+  userId: string
 
   constructor(
     lab: string,
@@ -18,9 +19,11 @@ export class Order {
     state: 'CREATED' | 'ANALYSIS' | 'COMPLETED',
     status: 'ACTIVE' | 'DELETED',
     services: Service[],
+    userId: string,
     id?: string,
   ) {
     this.id = id ?? randomUUID()
+    this.userId = userId
     this.lab = lab
     this.patient = patient
     this.customer = customer
