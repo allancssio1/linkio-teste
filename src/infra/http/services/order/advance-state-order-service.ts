@@ -3,7 +3,7 @@ import { AdvanceOrderBody } from '../../types/order-types'
 
 interface AdvanceStateOrderServiceRequest extends AdvanceOrderBody {}
 
-export class CreateOrderService {
+export class AdvanceStateOrderService {
   constructor(private readonly createOrderUseCase: AdvanceStateOrderUseCase) {}
   async execute({ id, state }: AdvanceStateOrderServiceRequest) {
     const order = await this.createOrderUseCase.execute({

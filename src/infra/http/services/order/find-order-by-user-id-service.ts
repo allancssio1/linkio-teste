@@ -7,8 +7,8 @@ export class FindOrderByUserIdService {
   constructor(
     private readonly findOrderByIdUserUseCase: FindOrderByUserIdUseCase,
   ) {}
-  async execute({ userId }: FindOrderByUserIdServiceRequest) {
-    const user = await this.findOrderByIdUserUseCase.execute({ userId })
+  async execute({ userId, state }: FindOrderByUserIdServiceRequest) {
+    const user = await this.findOrderByIdUserUseCase.execute({ userId, state })
     return user
   }
 }

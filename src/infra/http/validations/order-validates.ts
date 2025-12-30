@@ -13,6 +13,7 @@ export const createOrderSchema = z.object({
 
 export const findOrderByUserIdSchema = z.object({
   userId: z.uuid(),
+  state: z.enum(['CREATED', 'ANALYSIS', 'COMPLETED']).optional(),
 })
 export const findOrderByIdSchema = z.object({
   id: z.uuid(),
