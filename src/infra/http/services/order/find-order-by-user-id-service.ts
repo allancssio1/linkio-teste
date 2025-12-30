@@ -1,12 +1,14 @@
-import { FindUserByIdUseCase } from 'src/domain/useCases/user/find-user-by-id-use-case'
-import { FindUserByIdParams } from 'src/infra/http/types/user-types'
+import { FindOrderByUserIdUseCase } from 'src/domain/useCases/order/find-order-by-user-id-use-case'
+import { FindOrderByUserIdParams } from 'src/infra/http/types/order-types'
 
-interface FindUserByIdServiceRequest extends FindUserByIdParams {}
+interface FindOrderByUserIdServiceRequest extends FindOrderByUserIdParams {}
 
-export class FindUserByIdService {
-  constructor(private readonly findUserByIdUserUseCase: FindUserByIdUseCase) {}
-  async execute({ id }: FindUserByIdServiceRequest) {
-    const user = await this.findUserByIdUserUseCase.execute({ id })
+export class FindOrderByIdService {
+  constructor(
+    private readonly findOrderByIdUserUseCase: FindOrderByUserIdUseCase,
+  ) {}
+  async execute({ userId }: FindOrderByUserIdServiceRequest) {
+    const user = await this.findOrderByIdUserUseCase.execute({ userId })
     return user
   }
 }
