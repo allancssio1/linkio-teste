@@ -8,3 +8,6 @@ export const createUserSchema = z.object({
 export const findUserByEmailSchema = z.object({
   email: z.email(),
 })
+export const findUserByIdSchema = z.object({
+  id: z.uuid(),
+})
