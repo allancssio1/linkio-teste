@@ -12,4 +12,8 @@ export class UserRepositoryInMemory implements UserRepository {
     const user = users.find((user) => user.email === email)
     return Promise.resolve(user || null)
   }
+  findById(id: string): Promise<User | null> {
+    const user = users.find((user) => user.id === id)
+    return Promise.resolve(user || null)
+  }
 }

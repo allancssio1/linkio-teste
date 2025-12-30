@@ -4,7 +4,6 @@ import { OrderRepository } from 'src/domain/repositories/order-repository'
 import { OrderRepositoryInMemory } from 'test/repositories/order-repository-in-memory'
 import { beforeAll, describe, expect, test } from 'vitest'
 import { AdvanceStateOrderUseCase } from '../../order/advance-state-order-use-case'
-import { afterEach, beforeEach } from 'node:test'
 
 describe('Avance Status Order Use Case', () => {
   let repo: OrderRepository
@@ -43,7 +42,6 @@ describe('Avance Status Order Use Case', () => {
   })
 
   test('should be not able advance state to CREATED after update state to ANALYSIS', async () => {
-    console.log(repo.listOrders())
     await expect(
       sut.execute({
         id: order.id,
