@@ -1,0 +1,43 @@
+services:
+  linkio-db:
+    image: postgres:15-alpine
+    container_name: linkio-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-linkio}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-linkio}
+      POSTGRES_DB: ${POSTGRES_DB:-linkio_db}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-linkio} -d ${POSTGRES_DB:-linkio_db}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: linkio-api
+  #   restart: unless-stopped
+  #   ports:
+  #     - '${PORT:-3333}:${PORT:-3333}'
+  #   environment:
+  #     NODE_ENV: ${NODE_ENV:-dev}
+  #     PORT: ${PORT:-3333}
+  #     HOST: ${HOST:-0.0.0.0}
+  #     POSTGRES_HOST: linkio-db
+  #     POSTGRES_PORT: 5432
+  #     POSTGRES_USER: ${POSTGRES_USER:-linkio}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-linkio}
+  #     POSTGRES_DB: ${POSTGRES_DB:-linkio_db}
+  #     JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+  #   depends_on:
+  #     linkio-db:
+  #       condition: service_healthy
+
+volumes:
+  postgres_data:
