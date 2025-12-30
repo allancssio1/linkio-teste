@@ -3,7 +3,7 @@ import { FindOrderByUserIdParams } from 'src/infra/http/types/order-types'
 
 interface FindOrderByUserIdServiceRequest extends FindOrderByUserIdParams {}
 
-export class FindOrderByIdService {
+export class FindOrderByUserIdService {
   constructor(
     private readonly findOrderByIdUserUseCase: FindOrderByUserIdUseCase,
   ) {}
