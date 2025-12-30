@@ -1,14 +1,14 @@
-import { FindUserByEmailUseCase } from 'src/domain/useCases/user/find-user-by-email-use-case'
-import { FindUserByEmailParams } from 'src/infra/http/types/user-types'
+import { FindOrderByIdUseCase } from 'src/domain/useCases/order/find-order-by-id-use-case'
+import { FindOrderByIdParams } from 'src/infra/http/types/order-types'
 
-interface FindUserByIdServiceRequest extends FindUserByEmailParams {}
+interface FindOrderByIdServiceRequest extends FindOrderByIdParams {}
 
-export class FindUserByIdService {
+export class FindOrderByIdService {
   constructor(
-    private readonly findUserByEmailUserUseCase: FindUserByEmailUseCase,
+    private readonly findOrderByIdOrderUseCase: FindOrderByIdUseCase,
   ) {}
-  async execute({ email }: FindUserByIdServiceRequest) {
-    const user = await this.findUserByEmailUserUseCase.execute({ email })
-    return user
+  async execute({ id }: FindOrderByIdServiceRequest) {
+    const order = await this.findOrderByIdOrderUseCase.execute({ id })
+    return order
   }
 }

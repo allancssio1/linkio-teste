@@ -7,6 +7,6 @@ import {
 } from '../validations/order-validates'
 
 export type CreateOrderBody = z.infer<typeof createOrderSchema>
-export type FindOrderByEmailParams = z.infer<typeof findOrderByIdSchema>
-export type FindOrderByIdParams = z.infer<typeof findOrderByUserIdSchema>
+export type FindOrderByUserIdParams = z.infer<typeof findOrderByUserIdSchema>
+export type FindOrderByIdParams = z.infer<typeof findOrderByIdSchema>
 export type AdvanceOrderBody = z.infer<typeof advanceOrderSchema>
