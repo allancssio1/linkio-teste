@@ -15,7 +15,10 @@ export class AuthenticateUseCase {
       throw new UnauthorazedError()
     }
 
-    const passwordMatch = this.hashCompare.compare(password, user.password)
+    const passwordMatch = await this.hashCompare.compare(
+      password,
+      user.password,
+    )
 
     if (!passwordMatch) {
       throw new UnauthorazedError()

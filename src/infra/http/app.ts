@@ -1,8 +1,7 @@
-import fastify from 'fastify'
+import fastify, { type FastifyError } from 'fastify'
 import { fastifyCors } from '@fastify/cors'
-import { fastifySwagger } from '@fastify/swagger'
+import jwt from '@fastify/jwt'
 import {
-  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
   ZodTypeProvider,
@@ -21,19 +20,15 @@ app.register(fastifyCors, {
   origin: '*',
 })
 
+app.register(jwt, {
+  secret: env.JWT_SECRET,
+  sign: {
+    expiresIn: '1d',
+  },
+})
+
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
-
-app.register(fastifySwagger, {
-  openapi: {
-    info: {
-      title: 'User Service',
-      description: 'API for User Service',
-      version: '1.0.0',
-    },
-  },
-  transform: jsonSchemaTransform,
-})
 
 app.get('/', () => {
   return { status: 'ok' }
@@ -50,7 +45,26 @@ app.register(orderRoutes, {
   prefix: '/orders',
 })
 
-app.setErrorHandler((error, _request, reply) => {
+app.setErrorHandler((error: FastifyError, _request, reply) => {
+  if (error.name === 'UserAlreadyExistsError') {
+    return reply.status(409).send({
+      message: 'User already exists',
+    })
+  }
+
+  if (error.name === 'UnauthorazedError') {
+    return reply.status(401).send({
+      message: 'Invalid credentials',
+    })
+  }
+
+  if (error.code === 'FST_ERR_VALIDATION') {
+    return reply.status(400).send({
+      message: 'Validation error.',
+      errors: error.validation,
+    })
+  }
+
   if (error instanceof AppError) {
     return reply.status(error.statusCode).send({
       message: 'Validation error.',

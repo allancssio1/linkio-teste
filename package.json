@@ -6,7 +6,7 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc && tsc-alias",
     "start": "node --env-file=.env dist/src/infra/http/server.js",
-    "migrate": "node --env-file=.env dist/src/infra/database/drizzle/migrate.js",
+    "migrate": "node dist/src/infra/database/drizzle/migrate.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },
