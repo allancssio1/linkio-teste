@@ -10,6 +10,7 @@ interface CreateOrderUseCaseRequest {
   state: 'CREATED' | 'ANALYSIS' | 'COMPLETED'
   status: 'ACTIVE' | 'DELETED'
   services: { name: string; value: number; status: 'PENDING' | 'DONE' }[]
+  userId: string
 }
 
 export class CreateOrderUseCase {
@@ -22,6 +23,7 @@ export class CreateOrderUseCase {
     state,
     status,
     services,
+    userId,
   }: CreateOrderUseCaseRequest) {
     const valueInvalid = services.find((s) => s.value <= 0)
 
@@ -40,6 +42,7 @@ export class CreateOrderUseCase {
       state,
       status,
       servicesArray,
+      userId,
     )
 
     return await this.orderRepository.create(order)
