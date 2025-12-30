@@ -18,8 +18,10 @@ export class UserRepositoryDrizzle implements UserRepository {
     const user = await db.select().from(users).where(eq(users.id, id))
     return user && user.length > 0 ? UserMapper.toDomain(user[0]) : null
   }
-  async findByEmail(email: string): Promise<Optional<User, 'password'> | null> {
+  async findByEmail(email: string): Promise<User | null> {
     const user = await db.select().from(users).where(eq(users.email, email))
-    return user && user.length > 0 ? UserMapper.toDomain(user[0]) : null
+    return user && user.length > 0
+      ? UserMapper.toDomainAuthenticate(user[0])
+      : null
   }
 }

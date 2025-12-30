@@ -12,6 +12,13 @@ export abstract class UserMapper {
       email: user.email,
     }
   }
+  static toDomainAuthenticate(user: InferSelectModel<typeof users>): User {
+    return {
+      id: user.id,
+      email: user.email,
+      password: user.password,
+    }
+  }
   static toDatabase(user: User): InferSelectModel<typeof users> {
     return {
       id: user.id,
