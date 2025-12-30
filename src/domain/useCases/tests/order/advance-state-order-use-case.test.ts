@@ -4,15 +4,18 @@ import { OrderRepository } from 'src/domain/repositories/order-repository'
 import { OrderRepositoryInMemory } from 'test/repositories/order-repository-in-memory'
 import { beforeAll, describe, expect, test } from 'vitest'
 import { AdvanceStateOrderUseCase } from '../../order/advance-state-order-use-case'
+import { User } from 'src/domain/entities/user-entity'
 
 describe('Avance Status Order Use Case', () => {
   let repo: OrderRepository
   let service: Service
   let order: Order
   let sut: AdvanceStateOrderUseCase
+  let user: User
 
   beforeAll(() => {
     repo = new OrderRepositoryInMemory()
+    user = new User('john.doe@example.com', '123456')
     sut = new AdvanceStateOrderUseCase(repo)
     service = new Service('service-name', 5, 'PENDING')
     order = new Order(
@@ -22,6 +25,7 @@ describe('Avance Status Order Use Case', () => {
       'CREATED',
       'ACTIVE',
       [service],
+      user.id,
     )
 
     repo.create(order)
@@ -31,7 +35,6 @@ describe('Avance Status Order Use Case', () => {
     expect(
       await sut.execute({
         id: order.id,
-        state: 'ANALYSIS',
       }),
     ).toMatchObject(
       expect.objectContaining({
@@ -39,22 +42,12 @@ describe('Avance Status Order Use Case', () => {
         state: 'ANALYSIS',
       }),
     )
-  })
-
-  test('should be not able advance state to CREATED after update state to ANALYSIS', async () => {
-    await expect(
-      sut.execute({
-        id: order.id,
-        state: 'CREATED',
-      }),
-    ).rejects.toThrowError('Value Invalid')
   })
 
   test('Should be able advance state to COMPLETED', async () => {
     expect(
       await sut.execute({
         id: order.id,
-        state: 'COMPLETED',
       }),
     ).toMatchObject(
       expect.objectContaining({
@@ -63,24 +56,10 @@ describe('Avance Status Order Use Case', () => {
       }),
     )
   })
-  test('Should be not able advance state to ANALYSIS or CREATED after update state to COMPLETED', async () => {
-    await expect(
-      sut.execute({
-        id: order.id,
-        state: 'ANALYSIS',
-      }),
-    ).rejects.toThrowError('Value Invalid')
-    await expect(
-      sut.execute({
-        id: order.id,
-        state: 'CREATED',
-      }),
-    ).rejects.toThrowError('Value Invalid')
-  })
 
   test('Order not found', async () => {
-    await expect(
-      sut.execute({ id: 'e', state: 'ANALYSIS' }),
-    ).rejects.toThrowError('Resource not found')
+    await expect(sut.execute({ id: 'e' })).rejects.toThrowError(
+      'Resource not found',
+    )
   })
 })
