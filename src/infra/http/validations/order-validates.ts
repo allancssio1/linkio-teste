@@ -6,9 +6,6 @@ export const createOrderSchema = z.object({
   customer: z.string().min(6).max(100),
   patient: z.string().min(6).max(100),
   services: z.array(serviceSchema),
-  state: z.enum(['CREATED', 'ANALYSIS', 'COMPLETED']),
-  status: z.enum(['ACTIVE', 'DELETED']),
-  userId: z.uuid(),
 })
 
 export const findOrderByUserIdSchema = z.object({

@@ -1,7 +1,9 @@
 import { CreateOrderUseCase } from 'src/domain/useCases/order/create-order-use-case'
 import { CreateOrderBody } from '../../types/order-types'
 
-interface CreateOrderServiceRequest extends CreateOrderBody {}
+interface CreateOrderServiceRequest extends CreateOrderBody {
+  userId: string
+}
 
 export class CreateOrderService {
   constructor(private readonly createOrderUseCase: CreateOrderUseCase) {}
@@ -10,8 +12,6 @@ export class CreateOrderService {
     customer,
     patient,
     services,
-    state,
-    status,
     userId,
   }: CreateOrderServiceRequest) {
     const order = await this.createOrderUseCase.execute({
@@ -19,8 +19,6 @@ export class CreateOrderService {
       customer,
       patient,
       services,
-      state,
-      status,
       userId,
     })
     return order

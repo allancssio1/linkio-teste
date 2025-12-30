@@ -7,8 +7,6 @@ interface CreateOrderUseCaseRequest {
   lab: string
   patient: string
   customer: string
-  state: 'CREATED' | 'ANALYSIS' | 'COMPLETED'
-  status: 'ACTIVE' | 'DELETED'
   services: { name: string; value: number; status: 'PENDING' | 'DONE' }[]
   userId: string
 }
@@ -20,8 +18,6 @@ export class CreateOrderUseCase {
     customer,
     lab,
     patient,
-    state,
-    status,
     services,
     userId,
   }: CreateOrderUseCaseRequest) {
@@ -39,8 +35,8 @@ export class CreateOrderUseCase {
       lab,
       patient,
       customer,
-      state,
-      status,
+      'CREATED',
+      'ACTIVE',
       servicesArray,
       userId,
     )

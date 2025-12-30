@@ -3,13 +3,8 @@ import { FindOrderByIdParams } from '../../types/order-types'
 import { findOrderByIdService } from '../../factories/order/make-find-order-by-id'
 
 class FindOrderByIdController {
-  async handle(
-    request: FastifyRequest<{
-      Params: FindOrderByIdParams
-    }>,
-    reply: FastifyReply,
-  ) {
-    const { id } = request.params
+  async handle(request: FastifyRequest, reply: FastifyReply) {
+    const { id } = request.params as FindOrderByIdParams
 
     const order = await findOrderByIdService.execute({
       id,

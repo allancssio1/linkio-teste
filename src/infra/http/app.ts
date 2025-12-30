@@ -9,10 +9,11 @@ import {
 } from 'fastify-type-provider-zod'
 import { fromZodError } from 'zod-validation-error'
 import { ZodError } from '../config/zod-v4'
-// import { userRoutes } from './routes/user-routes'
+import { userRoutes } from './routes/user-routes'
 import { AppError } from 'src/core/errors/errors/app-error'
 import { env } from '../config/env'
-// import fastifySwaggerUi from '@fastify/swagger-ui'
+import { authRoutes } from './routes/auth-routes'
+import { orderRoutes } from './routes/order-routes'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -33,21 +34,21 @@ app.register(fastifySwagger, {
   },
   transform: jsonSchemaTransform,
 })
-// app.register(fastifySwaggerUi, {
-//   routePrefix: '/docs',
-//   uiConfig: {
-//     docExpansion: 'list',
-//     deepLinking: false,
-//   },
-// })
 
 app.get('/', () => {
   return { status: 'ok' }
 })
 
-// app.register(userRoutes, {
-//   prefix: '/users',
-// })
+app.register(userRoutes, {
+  prefix: '/users',
+})
+
+app.register(authRoutes, {
+  prefix: '/auth',
+})
+app.register(orderRoutes, {
+  prefix: '/orders',
+})
 
 app.setErrorHandler((error, _request, reply) => {
   // if (error.code === 'FST_ERR_VALIDATION') {

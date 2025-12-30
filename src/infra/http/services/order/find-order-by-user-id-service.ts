@@ -1,7 +1,7 @@
 import { FindOrderByUserIdUseCase } from 'src/domain/useCases/order/find-order-by-user-id-use-case'
-import { FindOrderByUserIdParams } from 'src/infra/http/types/order-types'
+import { FindOrderByUserIdQuery } from 'src/infra/http/types/order-types'
 
-interface FindOrderByUserIdServiceRequest extends FindOrderByUserIdParams {}
+interface FindOrderByUserIdServiceRequest extends FindOrderByUserIdQuery {}
 
 export class FindOrderByUserIdService {
   constructor(

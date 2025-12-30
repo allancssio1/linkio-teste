@@ -21,8 +21,6 @@ describe('Create Order Use Case', () => {
       lab: 'lab-name',
       patient: 'patient-name',
       customer: 'customer-name',
-      state: 'CREATED',
-      status: 'ACTIVE',
       services: [
         {
           name: 'name service 1',
@@ -60,8 +58,6 @@ describe('Create Order Use Case', () => {
         lab: 'lab-name',
         patient: 'patient-name',
         customer: 'customer-name',
-        state: 'CREATED',
-        status: 'ACTIVE',
         services: [
           {
             name: 'name service 1',

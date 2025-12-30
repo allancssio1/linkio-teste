@@ -1,7 +1,7 @@
 import { AdvanceStateOrderUseCase } from 'src/domain/useCases/order/advance-state-order-use-case'
-import { AdvanceOrderBody } from '../../types/order-types'
+import { AdvanceOrderParams } from '../../types/order-types'
 
-interface AdvanceStateOrderServiceRequest extends AdvanceOrderBody {}
+interface AdvanceStateOrderServiceRequest extends AdvanceOrderParams {}
 
 export class AdvanceStateOrderService {
   constructor(private readonly createOrderUseCase: AdvanceStateOrderUseCase) {}

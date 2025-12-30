@@ -1,15 +1,10 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { AdvanceOrderBody } from '../../types/order-types'
+import { AdvanceOrderParams } from '../../types/order-types'
 import { advanceStateOrderService } from '../../factories/order/make-advance-state-order'
 
-class AdvanceStateOrderByIdController {
-  async handle(
-    request: FastifyRequest<{
-      Params: AdvanceOrderBody
-    }>,
-    reply: FastifyReply,
-  ) {
-    const { id } = request.params
+class AdvanceStateOrderController {
+  async handle(request: FastifyRequest, reply: FastifyReply) {
+    const { id } = request.params as AdvanceOrderParams
 
     const order = await advanceStateOrderService.execute({
       id,
@@ -18,7 +13,7 @@ class AdvanceStateOrderByIdController {
     return reply.status(201).send(order)
   }
 }
-export const advancestateOrderByIdController =
-  new AdvanceStateOrderByIdController().handle.bind(
-    new AdvanceStateOrderByIdController(),
+export const advancestateOrderController =
+  new AdvanceStateOrderController().handle.bind(
+    new AdvanceStateOrderController(),
   )
