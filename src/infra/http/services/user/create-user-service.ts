@@ -1,5 +1,5 @@
 import { CreateUserUseCase } from 'src/domain/useCases/user/create-user-use-case'
-import { CreateUserBody } from '../types/user-types'
+import { CreateUserBody } from '../../types/user-types'
 
 interface CreateUserServiceRequest extends CreateUserBody {}
 
