@@ -1,14 +1,10 @@
 #!/bin/sh
 
-echo "Waiting for postgres..."
-while ! nc -z linkio-db 5432; do
+echo "Waiting for MongoDB..."
+while ! nc -z linkio-db 27017; do
   sleep 1
 done
-echo "PostgreSQL started"
-
-echo "Running migrations..."
-npm run migrate
-echo "Migrations finished"
+echo "MongoDB started"
 
 echo "Starting server..."
 node dist/src/infra/http/server.js

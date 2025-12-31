@@ -1,22 +1,21 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
+import { Request, Response, NextFunction } from 'express'
 import { CreateUserBody } from '../../types/user-types'
 import { createUserService } from '../../factories/user/make-create-user'
 
 class CreateUserController {
-  async handle(
-    request: FastifyRequest<{
-      Body: CreateUserBody
-    }>,
-    reply: FastifyReply,
-  ) {
-    const { email, password } = request.body
+  async handle(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, password } = req.body as CreateUserBody
 
-    const user = await createUserService.execute({
-      email,
-      password,
-    })
+      const user = await createUserService.execute({
+        email,
+        password,
+      })
 
-    return reply.status(200).send(user)
+      return res.status(200).json(user)
+    } catch (error) {
+      next(error)
+    }
   }
 }
 export const createUserController = new CreateUserController().handle.bind(

@@ -1,10 +1,10 @@
 import { test, expect, describe, beforeAll } from 'vitest'
-import { Order } from 'src/domain/entities/order-entity'
-import { OrderRepository } from 'src/domain/repositories/order-repository'
-import { OrderRepositoryInMemory } from 'tests/repositories/order-repository-in-memory'
+import { Order } from '../../../entities/order-entity'
+import { Service } from '../../../entities/service-entity'
+import { User } from '../../../entities/user-entity'
+import { OrderRepository } from '../../../repositories/order-repository'
+import { OrderRepositoryInMemory } from '../../../../../tests/repositories/order-repository-in-memory'
 import { CreateOrderUseCase } from '../../order/create-order-use-case'
-import { Service } from 'src/domain/entities/service-entity'
-import { User } from 'src/domain/entities/user-entity'
 
 describe('Create Order Use Case', () => {
   let sut: CreateOrderUseCase

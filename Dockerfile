@@ -18,10 +18,9 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci --only=prod
+RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/src/infra/database/drizzle ./dist/src/infra/database/drizzle
 COPY start.sh ./
 
 RUN chmod +x start.sh

@@ -1,10 +1,10 @@
-import { Order } from 'src/domain/entities/order-entity'
-import { Service } from 'src/domain/entities/service-entity'
-import { OrderRepository } from 'src/domain/repositories/order-repository'
-import { OrderRepositoryInMemory } from 'test/repositories/order-repository-in-memory'
 import { beforeAll, describe, expect, test } from 'vitest'
+import { Order } from '../../../entities/order-entity'
+import { Service } from '../../../entities/service-entity'
+import { User } from '../../../entities/user-entity'
+import { OrderRepository } from '../../../repositories/order-repository'
+import { OrderRepositoryInMemory } from '../../../../../tests/repositories/order-repository-in-memory'
 import { AdvanceStateOrderUseCase } from '../../order/advance-state-order-use-case'
-import { User } from 'src/domain/entities/user-entity'
 
 describe('Avance Status Order Use Case', () => {
   let repo: OrderRepository

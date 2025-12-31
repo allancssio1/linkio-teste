@@ -1,8 +1,8 @@
 import { beforeAll, describe, expect, test } from 'vitest'
-import { UserRepository } from 'src/domain/repositories/user-repository'
-import { UserRepositoryInMemory } from 'tests/repositories/user-repository-in-memory'
-import { User } from 'src/domain/entities/user-entity'
-import { FindUserByIdUseCase } from 'src/domain/useCases/user/find-user-by-id-use-case'
+import { UserRepository } from '../../../../domain/repositories/user-repository'
+import { UserRepositoryInMemory } from '../../../../../tests/repositories/user-repository-in-memory'
+import { User } from '../../../entities/user-entity'
+import { FindUserByIdUseCase } from '../../user/find-user-by-id-use-case'
 
 describe('Unit Test Find User', () => {
   let repo: UserRepository

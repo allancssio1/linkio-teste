@@ -1,10 +1,10 @@
-import { InferSelectModel } from 'drizzle-orm'
-import { orders } from '../drizzle/schema'
 import { Order } from 'src/domain/entities/order-entity'
 import { Service } from 'src/domain/entities/service-entity'
+import { IOrder } from '../mongoose/schemas/order-schema'
+import { Types } from 'mongoose'
 
 export abstract class OrderMapper {
-  static toDomain(order: InferSelectModel<typeof orders>): Order {
+  static toDomain(order: IOrder): Order {
     return new Order(
       order.lab,
       order.patient,
@@ -12,12 +12,12 @@ export abstract class OrderMapper {
       order.state,
       order.status,
       order.services.map((s) => new Service(s.name, s.value, s.status)),
-      order.id,
+      order._id.toString(),
     )
   }
-  static toDatabase(order: Order): InferSelectModel<typeof orders> {
+
+  static toDatabase(order: Order): Partial<IOrder> {
     return {
-      id: order.id,
       lab: order.lab,
       patient: order.patient,
       customer: order.customer,
@@ -25,7 +25,7 @@ export abstract class OrderMapper {
       status: order.status,
       services: order.services,
       createdAt: new Date(),
-      userId: order.userId,
+      userId: new Types.ObjectId(order.userId),
     }
   }
 }

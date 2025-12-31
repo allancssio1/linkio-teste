@@ -1,15 +1,12 @@
-import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
+import { Router } from 'express'
 import { loginController } from '../controllers/user/login-controller'
 import { loginSchema } from '../validations/user-validates.js'
+import { validateZod } from '../middlewares/validate-zod'
 
-export const authRoutes: FastifyPluginCallbackZod = (app) => {
-  app.post(
-    '/login',
-    {
-      schema: {
-        body: loginSchema,
-      },
-    },
-    loginController,
-  )
-}
+export const authRoutes = Router()
+
+authRoutes.post(
+  '/login',
+  validateZod(loginSchema, 'body'),
+  loginController,
+)

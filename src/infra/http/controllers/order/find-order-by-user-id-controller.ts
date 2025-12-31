@@ -1,18 +1,23 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
+import { Response, NextFunction } from 'express'
 import { FindOrderByUserIdQuery } from '../../types/order-types'
 import { findOrderByUserIdService } from '../../factories/order/make-find-order-by-user-id'
+import { AuthenticatedRequest } from '../../types/express'
 
 class FindOrderByUserIdController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
-    const { sub: userId } = request.user
-    const { state } = request.params as FindOrderByUserIdQuery
+  async handle(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const { sub: userId } = req.user!
+      const { state } = req.query as FindOrderByUserIdQuery
 
-    const order = await findOrderByUserIdService.execute({
-      userId,
-      state,
-    })
+      const order = await findOrderByUserIdService.execute({
+        userId,
+        state,
+      })
 
-    return reply.status(201).send(order)
+      return res.status(201).json(order)
+    } catch (error) {
+      next(error)
+    }
   }
 }
 export const findOrderByUserIdController =

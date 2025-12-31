@@ -1,29 +1,27 @@
-import { InferSelectModel } from 'drizzle-orm'
-import { users } from '../drizzle/schema'
 import { User } from 'src/domain/entities/user-entity'
 import { Optional } from 'src/core/types/optional'
+import { IUser } from '../mongoose/schemas/user-schema'
 
 export abstract class UserMapper {
-  static toDomain(
-    user: InferSelectModel<typeof users>,
-  ): Optional<User, 'password'> {
+  static toDomain(user: IUser): Optional<User, 'password'> {
     return {
-      id: user.id,
+      id: user._id.toString(),
       email: user.email,
     }
   }
-  static toDomainAuthenticate(user: InferSelectModel<typeof users>): User {
+
+  static toDomainAuthenticate(user: IUser): User {
     return {
-      id: user.id,
+      id: user._id.toString(),
       email: user.email,
       password: user.password,
     }
   }
-  static toDatabase(user: User): InferSelectModel<typeof users> {
+
+  static toDatabase(user: User): Partial<IUser> {
     return {
-      id: user.id,
       email: user.email,
-      password: user.password,
+      password: user.password || '',
       createdAt: new Date(),
     }
   }

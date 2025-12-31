@@ -1,23 +1,19 @@
 services:
   linkio-db:
-    image: postgres:15-alpine
-    container_name: linkio-db
+    image: mongo:8
+    container_name: linkio-mongodb
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-linkio}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-linkio}
-      POSTGRES_DB: ${POSTGRES_DB:-linkio_db}
+      MONGO_INITDB_ROOT_USERNAME: linkio
+      MONGO_INITDB_ROOT_PASSWORD: linkio
+      MONGO_INITDB_DATABASE: linkio_db
     ports:
-      - '${POSTGRES_PORT:-5432}:5432'
+      - '27017:27017'
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mongodb_data:/data/db
     healthcheck:
-      test:
-        [
-          'CMD-SHELL',
-          'pg_isready -U ${POSTGRES_USER:-linkio} -d ${POSTGRES_DB:-linkio_db}',
-        ]
-      interval: 5s
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
       timeout: 5s
       retries: 5
 
@@ -33,15 +29,11 @@ services:
       NODE_ENV: ${NODE_ENV:-dev}
       PORT: ${PORT:-3333}
       HOST: ${HOST:-0.0.0.0}
-      POSTGRES_HOST: linkio-db
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: ${POSTGRES_USER:-linkio}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-linkio}
-      POSTGRES_DB: ${POSTGRES_DB:-linkio_db}
+      MONGODB_URI: mongodb://linkio:linkio@linkio-db:27017/linkio_db?authSource=admin
       JWT_SECRET: ${JWT_SECRET:-secret-test}
     depends_on:
       linkio-db:
         condition: service_healthy
 
 volumes:
-  postgres_data:
+  mongodb_data:

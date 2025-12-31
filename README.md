@@ -1,18 +1,19 @@
 # LinkIO Desafio
 
-API RESTful para gerenciamento de pedidos de laboratório desenvolvida com Fastify, TypeScript, PostgreSQL e Drizzle ORM.
+API RESTful para gerenciamento de pedidos de laboratório desenvolvida com Express, TypeScript, PostgreSQL e Drizzle ORM.
 
 ## 🚀 Tecnologias
 
 - **Node.js** v20+
 - **TypeScript** 5.9.3
-- **Fastify** 5.6.2 - Framework web de alta performance
+- **Express** 5.0.1 - Framework web minimalista e flexível
 - **PostgreSQL** 15 - Banco de dados relacional
 - **Drizzle ORM** 0.45.1 - ORM type-safe
 - **Zod** v4.2.1 - Validação de schemas
 - **Docker & Docker Compose** - Containerização
-- **JWT** - Autenticação stateless
+- **JWT** (jsonwebtoken) - Autenticação stateless
 - **bcryptjs** - Hash de senhas
+- **CORS** - Middleware para controle de origem cruzada
 
 ## 📋 Pré-requisitos
 
@@ -474,9 +475,9 @@ src/
 ├── infra/               # Camada de infraestrutura
 │   ├── config/          # Configurações (env, zod)
 │   ├── database/        # Drizzle ORM, migrations, schemas
-│   └── http/            # Fastify, rotas, controllers
+│   └── http/            # Express, rotas, controllers
 │       ├── controllers/ # Controladores HTTP
-│       ├── middlewares/ # JWT, validações
+│       ├── middlewares/ # JWT, validações Zod
 │       ├── routes/      # Definição de rotas
 │       ├── services/    # Serviços de aplicação
 │       └── validations/ # Schemas Zod
@@ -636,4 +637,27 @@ Cada chamada ao endpoint `PATCH /orders/:id/advance` move o pedido para o próxi
 
 ---
 
-**Feito com ❤️ usando Fastify, TypeScript e Docker**
+## 🔄 Migração Fastify → Express
+
+Este projeto foi **migrado de Fastify para Express** mantendo 100% da funcionalidade original.
+
+### Principais mudanças:
+- ✅ Framework: `fastify` → `express`
+- ✅ CORS: `@fastify/cors` → `cors` middleware
+- ✅ JWT: `@fastify/jwt` → `jsonwebtoken` (biblioteca direta)
+- ✅ Validação: `fastify-type-provider-zod` → Middleware `validateZod` customizado
+- ✅ Rotas: Plugins Fastify → `Router()` do Express
+- ✅ Error Handler: `setErrorHandler()` → Middleware de erro Express
+
+### Arquivos migrados:
+- [app.ts](src/infra/http/app.ts) - Configuração principal da aplicação
+- [server.ts](src/infra/http/server.ts) - Inicialização do servidor
+- [user-routes.ts](src/infra/http/routes/user-routes.ts) - Rotas de usuário
+- [auth-routes.ts](src/infra/http/routes/auth-routes.ts) - Rotas de autenticação
+- [order-routes.ts](src/infra/http/routes/order-routes.ts) - Rotas de pedidos
+
+Para mais detalhes sobre a migração, veja [MIGRACAO_COMPLETA.md](MIGRACAO_COMPLETA.md)
+
+---
+
+**Feito com ❤️ usando Express, TypeScript e Docker**

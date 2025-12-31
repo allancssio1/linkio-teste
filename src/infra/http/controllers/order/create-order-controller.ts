@@ -1,15 +1,20 @@
-import type { FastifyReply, FastifyRequest } from 'fastify'
+import { Response, NextFunction } from 'express'
 import { createOrderService } from '../../factories/order/make-create-order'
 import type { CreateOrderBody } from '../../types/order-types'
+import { AuthenticatedRequest } from '../../types/express'
 
 class CreateOrderController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
-    const body = request.body as CreateOrderBody
-    const { sub: userId } = request.user
+  async handle(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const body = req.body as CreateOrderBody
+      const { sub: userId } = req.user!
 
-    const order = await createOrderService.execute({ ...body, userId })
+      const order = await createOrderService.execute({ ...body, userId })
 
-    return reply.status(200).send(order)
+      return res.status(200).json(order)
+    } catch (error) {
+      next(error)
+    }
   }
 }
 export const createOrderController = new CreateOrderController().handle.bind(

@@ -1,6 +1,4 @@
-import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
-import { loginController } from '../controllers/user/login-controller'
-import { loginSchema } from '../validations/user-validates.js'
+import { Router } from 'express'
 import {
   advanceOrderSchema,
   createOrderSchema,
@@ -11,36 +9,27 @@ import { createOrderController } from '../controllers/order/create-order-control
 import { advancestateOrderController } from '../controllers/order/advance-state-order-controller'
 import { findOrderByIdController } from '../controllers/order/find-order-by-id-controller'
 import { findOrderByUserIdController } from '../controllers/order/find-order-by-user-id-controller'
+import { validateZod } from '../middlewares/validate-zod'
 
-export const orderRoutes: FastifyPluginCallbackZod = (app) => {
-  app.post(
-    '/',
-    {
-      onRequest: [verifyJWT],
-      schema: {
-        body: createOrderSchema,
-      },
-    },
-    createOrderController,
-  ),
-    app.patch(
-      '/:id/advance',
-      {
-        onRequest: [verifyJWT],
-        schema: {
-          params: advanceOrderSchema,
-        },
-      },
-      advancestateOrderController,
-    ),
-    app.get(
-      '/',
-      {
-        onRequest: [verifyJWT],
-        schema: {
-          querystring: findOrderByUserIdSchema,
-        },
-      },
-      findOrderByUserIdController,
-    )
-}
+export const orderRoutes = Router()
+
+orderRoutes.post(
+  '/',
+  verifyJWT,
+  validateZod(createOrderSchema, 'body'),
+  createOrderController,
+)
+
+orderRoutes.patch(
+  '/:id/advance',
+  verifyJWT,
+  validateZod(advanceOrderSchema, 'params'),
+  advancestateOrderController,
+)
+
+orderRoutes.get(
+  '/',
+  verifyJWT,
+  validateZod(findOrderByUserIdSchema, 'query'),
+  findOrderByUserIdController,
+)

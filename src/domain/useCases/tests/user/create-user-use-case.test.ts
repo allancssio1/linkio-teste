@@ -1,10 +1,10 @@
 import { test, expect, describe, beforeAll } from 'vitest'
-import { CreateUserUseCase } from 'src/domain/useCases/user/create-user-use-case'
-import { UserRepositoryInMemory } from 'test/repositories/user-repository-in-memory'
-import { UserRepository } from 'src/domain/repositories/user-repository'
-import { User } from 'src/domain/entities/user-entity'
-import { HashGenerate } from 'src/domain/cryptography/hasher-generate'
-import { HasherInMemory } from 'test/cryptography/hasher-in-memory'
+import { User } from '../../../entities/user-entity'
+import { UserRepository } from '../../../repositories/user-repository'
+import { HashGenerate } from '../../../cryptography/hasher-generate'
+import { CreateUserUseCase } from '../../user/create-user-use-case'
+import { UserRepositoryInMemory } from '../../../../../tests/repositories/user-repository-in-memory'
+import { HasherInMemory } from '../../../../../tests/cryptography/hasher-in-memory'
 
 describe('Create User Use Case Test', () => {
   let sut: CreateUserUseCase

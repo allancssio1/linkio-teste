@@ -1,11 +1,5 @@
-import fastify, { type FastifyError } from 'fastify'
-import { fastifyCors } from '@fastify/cors'
-import jwt from '@fastify/jwt'
-import {
-  serializerCompiler,
-  validatorCompiler,
-  ZodTypeProvider,
-} from 'fastify-type-provider-zod'
+import express, { Request, Response, NextFunction } from 'express'
+import cors from 'cors'
 import { fromZodError } from 'zod-validation-error'
 import { ZodError } from '../config/zod-v4'
 import { userRoutes } from './routes/user-routes'
@@ -14,66 +8,45 @@ import { env } from '../config/env'
 import { authRoutes } from './routes/auth-routes'
 import { orderRoutes } from './routes/order-routes'
 
-const app = fastify().withTypeProvider<ZodTypeProvider>()
+const app = express()
 
-app.register(fastifyCors, {
+app.use(cors({
   origin: '*',
+}))
+
+app.use(express.json())
+
+app.get('/', (_req: Request, res: Response) => {
+  return res.json({ status: 'ok' })
 })
 
-app.register(jwt, {
-  secret: env.JWT_SECRET,
-  sign: {
-    expiresIn: '1d',
-  },
-})
+app.use('/users', userRoutes)
+app.use('/auth', authRoutes)
+app.use('/orders', orderRoutes)
 
-app.setSerializerCompiler(serializerCompiler)
-app.setValidatorCompiler(validatorCompiler)
-
-app.get('/', () => {
-  return { status: 'ok' }
-})
-
-app.register(userRoutes, {
-  prefix: '/users',
-})
-
-app.register(authRoutes, {
-  prefix: '/auth',
-})
-app.register(orderRoutes, {
-  prefix: '/orders',
-})
-
-app.setErrorHandler((error: FastifyError, _request, reply) => {
+// Error handler - deve ser o último middleware
+app.use((error: any, _req: Request, res: Response, _next: NextFunction) => {
   if (error.name === 'UserAlreadyExistsError') {
-    return reply.status(409).send({
+    return res.status(409).json({
       message: 'User already exists',
     })
   }
 
   if (error.name === 'UnauthorazedError') {
-    return reply.status(401).send({
+    return res.status(401).json({
       message: 'Invalid credentials',
     })
   }
 
-  if (error.code === 'FST_ERR_VALIDATION') {
-    return reply.status(400).send({
-      message: 'Validation error.',
-      errors: error.validation,
-    })
-  }
-
   if (error instanceof AppError) {
-    return reply.status(error.statusCode).send({
+    return res.status(error.statusCode).json({
       message: 'Validation error.',
       errors: error,
     })
   }
 
   if (error instanceof ZodError) {
-    return reply.status(400).send({
+    return res.status(400).json({
       message: 'Validation error.',
       errors: fromZodError(error),
     })
@@ -85,7 +58,7 @@ app.setErrorHandler((error: FastifyError, _request, reply) => {
     // TODO: Here we should log to an external tool like DataDog/NewRelic/Sentry
   }
 
-  return reply.status(500).send({ message: 'Internal server error.' })
+  return res.status(500).json({ message: 'Internal server error.' })
 })
 
 export { app }

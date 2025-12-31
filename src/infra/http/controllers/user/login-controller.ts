@@ -1,25 +1,21 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
+import { Request, Response, NextFunction } from 'express'
+import jwt from 'jsonwebtoken'
 import { loginService } from '../../factories/user/make-login.js'
 import { LoginBody } from '../../types/user-types.js'
+import { env } from '../../../config/env'
 
 class LoginController {
-  async handler(
-    request: FastifyRequest<{
-      Body: LoginBody
-    }>,
-    reply: FastifyReply,
-  ) {
-    const { password, email } = request.body
-    const data = await loginService.execute({ email, password })
-    const token = await reply.jwtSign(
-      {},
-      {
-        sign: {
-          sub: data,
-        },
-      },
-    )
-    return reply.status(200).send({ access_token: token })
+  async handler(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { password, email } = req.body as LoginBody
+      const data = await loginService.execute({ email, password })
+      const token = jwt.sign({ sub: data }, env.JWT_SECRET, {
+        expiresIn: '1d',
+      })
+      return res.status(200).json({ access_token: token })
+    } catch (error) {
+      next(error)
+    }
   }
 }
 
